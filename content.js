@@ -22,6 +22,7 @@ chrome.runtime.onMessage.addListener(
     if ( request.message === "clicked_browser_action" ) {
       // TODO: toggle hidden
       $('.watch-sidebar').hide();
+      $('#secondary-inner').hide();
       $('.intercom-launcher').hide();
       $('#intercom-container').hide();
       $('#ibp-main-text').hide();
