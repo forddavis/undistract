@@ -1,13 +1,48 @@
-// var firstHref = $("a[href^='http']").eq(0).attr("href");
+function hideAll() {
+  $('.watch-sidebar').hide();
+  $('#secondary-inner').hide();
+  $('.intercom-launcher').hide();
+  $('#intercom-container').hide();
+  $('#ibp-main-text').hide();
+  $('#ibp-main').hide();
+  $('#related.ytd-watch').hide();
+  $('#dismissable').hide();
+  $('#masthead-ad').hide();
+  $('.ytd-video-masthead-ad-v3-renderer-0').hide();
+  if(window.location.href == "https://www.youtube.com/") {
+    $('.ytd-browse').hide();
+  }
+  if(window.location.href.includes("https://www.youtube.com/") || window.location.href.includes("https://www.google.com/")) {
+    var listboxes = $('[role="listbox"]')
+    listboxes.each(function () {
+      $(this).hide();
+      $(this).addClass("hidden");
+    });
+  }
+}
 
-// console.log(firstHref);
-// TODO:
-// Optionally disable netflix and FB autoplay
-// Add a blacklist that can be added to and iterated through
-// Add a tool for right click on element to blacklist it
-// Wishlist:
-// Add a tool to view and manage the blacklist
-// Toggle to turn it off
+function unhideAll() {
+  $("body").off('DOMSubtreeModified', hideAll());
+  $('.watch-sidebar').show();
+  $('#secondary-inner').show();
+  $('.intercom-launcher').show();
+  $('#intercom-container').show();
+  $('#ibp-main-text').show();
+  $('#ibp-main').show();
+  $('#related.ytd-watch').show();
+  $('#dismissable').show();
+  $('#masthead-ad').show();
+  $('.ytd-video-masthead-ad-v3-renderer-0').show();
+  if(window.location.href == "https://www.youtube.com/") {
+    $('.ytd-browse').show();
+  }
+  if(window.location.href.includes("https://www.youtube.com/") || window.location.href.includes("https://www.google.com/")) {
+    $('[role="listbox"]').each(function () {
+      $(this).show();
+    });
+  }
+}
+
 $("<style>")
     .prop("type", "text/css")
     .html("\
@@ -15,19 +50,17 @@ $("<style>")
         display:none !important;\
     }")
     .appendTo("head");
-$('.watch-sidebar').hide();
+
+hideAll();
+
+$("body").on('DOMSubtreeModified', function () {
+  hideAll();
+});
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if ( request.message === "clicked_browser_action" ) {
-      // TODO: toggle hidden
-      $('.watch-sidebar').hide();
-      $('#secondary-inner').hide();
-      $('.intercom-launcher').hide();
-      $('#intercom-container').hide();
-      $('#ibp-main-text').hide();
-      $('#ibp-main').hide();
-      $('#related.ytd-watch').hide();
+     unhideAll();
     }
   }
 );
